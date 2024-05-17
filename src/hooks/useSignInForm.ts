@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import { FormikHelpers } from 'formik';
 import { authService } from '@/services/auth';
 import { useAuth } from '@/hooks/useAuth';
+import { useState } from 'react';
 
 const signInSchema = yup.object({
   email: yup
@@ -22,6 +23,7 @@ type SignInData = yup.InferType<typeof signInSchema>;
 
 export function useSignInForm() {
   const { signIn } = useAuth();
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const handleSubmit = async (
     values: SignInData,
@@ -32,14 +34,14 @@ export function useSignInForm() {
     try {
       const response = await authService.login(values);
 
-      console.log(response);
-
       signIn(response.tokens.access);
+      setServerError(null);
     } catch (error: any) {
       if (error.response.status === 500) {
-        actions.setErrors({
-          password: 'Ops, problemas no servidor, tente mais tarde.',
-        });
+        setServerError('Oops, server issues, please try again later.');
+      }
+      if (error.response.status === 401) {
+        setServerError('Invalid credentials');
       }
     }
 
@@ -48,6 +50,7 @@ export function useSignInForm() {
 
   return {
     signInSchema,
+    serverError,
     handleSubmit,
   };
 }
