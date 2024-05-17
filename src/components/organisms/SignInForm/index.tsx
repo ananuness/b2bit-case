@@ -2,10 +2,10 @@ import { ErrorMessage, Form, Formik } from 'formik';
 import { Input } from '@/components/atoms/Input';
 import { Label } from '@/components/atoms/Label';
 import { Button } from '@/components/atoms/Button';
-import { useSignInForm } from './useSignInForm';
+import { useSignInForm } from '@/hooks/useSignInForm';
 
 export function SignInForm() {
-  const { signInSchema, handleSubmit } = useSignInForm();
+  const { signInSchema, serverError, handleSubmit } = useSignInForm();
 
   return (
     <Formik
@@ -17,6 +17,12 @@ export function SignInForm() {
     >
       {({ isSubmitting }) => (
         <Form className="w-full max-w-96">
+          {serverError && (
+            <span className="block text-base text-center mb-2 text-red-700">
+              {serverError}
+            </span>
+          )}
+
           <div className="flex flex-col gap-2">
             <Label title="E-mail" htmlFor="email" />
             <Input id="email" name="email" placeholder="@gmail.com" />
