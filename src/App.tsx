@@ -1,3 +1,10 @@
+import { AuthProvider } from '@/contexts/AuthContext';
+import { Router } from './router';
+
 export default function App() {
-  return <div>opa</div>;
+  return (
+    <AuthProvider>
+      <Router />
+    </AuthProvider>
+  );
 }
