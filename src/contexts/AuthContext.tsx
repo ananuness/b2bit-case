@@ -1,4 +1,5 @@
 import { createContext, useState } from 'react';
+import { ACCESS_TOKEN_KEY } from '@/constants';
 
 interface AuthContextValue {
   signedIn: boolean;
@@ -10,18 +11,18 @@ export const AuthContext = createContext({} as AuthContextValue);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [signedIn, setSignedIn] = useState<boolean>(() => {
-    const storedAccessToken = localStorage.getItem('@b2bit:access_token');
+    const storedAccessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
 
     return !!storedAccessToken;
   });
 
   const signIn = (accessToken: string) => {
-    localStorage.setItem('@b2bit:access_token', accessToken);
+    localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
     setSignedIn(true);
   };
 
   const signOut = () => {
-    localStorage.removeItem('@b2bit:access_token');
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
     setSignedIn(false);
   };
 
