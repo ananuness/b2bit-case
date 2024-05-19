@@ -1,8 +1,9 @@
-import { ErrorMessage, Form, Formik } from 'formik';
+import { ErrorMessage as FormikMessage, Form, Formik } from 'formik';
+import { useSignInForm } from '@/hooks/useSignInForm';
 import { Input } from '@/components/atoms/Input';
 import { Label } from '@/components/atoms/Label';
 import { Button } from '@/components/atoms/Button';
-import { useSignInForm } from '@/hooks/useSignInForm';
+import { ErrorMessage } from '@/components/atoms/ErrorMessage';
 
 export function SignInForm() {
   const { signInSchema, serverError, handleSubmit } = useSignInForm();
@@ -16,21 +17,26 @@ export function SignInForm() {
       }}
     >
       {({ isSubmitting }) => (
-        <Form className="w-full max-w-96">
+        <Form aria-label="form" className="w-full max-w-96">
           {serverError && (
-            <span className="block text-base text-center mb-2 text-red-700">
-              {serverError}
-            </span>
+            <ErrorMessage
+              message={serverError}
+              className="block text-base text-center mb-2 text-red-700"
+            />
           )}
 
           <div className="flex flex-col gap-2">
             <Label title="E-mail" htmlFor="email" />
-            <Input id="email" name="email" placeholder="@gmail.com" />
-            <ErrorMessage name="email">
-              {(msg) => (
-                <span className="ml-1 text-sm text-red-700">{msg}</span>
-              )}
-            </ErrorMessage>
+            <Input
+              id="email"
+              name="email"
+              placeholder="@gmail.com"
+              aria-label="type your e-mail"
+            />
+            <FormikMessage
+              name="email"
+              render={(msg) => <ErrorMessage message={msg} className="ml-1" />}
+            />
           </div>
 
           <div className="flex flex-col gap-2 mt-7 mb-9">
@@ -38,14 +44,14 @@ export function SignInForm() {
             <Input
               id="password"
               name="password"
-              placeholder="••••••••••"
               type="password"
+              placeholder="••••••••••"
+              aria-label="type your password"
             />
-            <ErrorMessage name="password">
-              {(msg) => (
-                <span className="ml-1 text-sm text-red-700">{msg}</span>
-              )}
-            </ErrorMessage>
+            <FormikMessage
+              name="password"
+              render={(msg) => <ErrorMessage message={msg} className="ml-1" />}
+            />
           </div>
 
           <Button
