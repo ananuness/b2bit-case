@@ -42,6 +42,8 @@ export function Button({
     <button
       {...props}
       type={type ?? 'button'}
+      aria-label={isLoading ? 'Loading' : title}
+      disabled={isLoading}
       className={cn(
         'flex justify-center items-center w-full rounded-lg border-none transition-all duration-300 font-bold text-lg text-zinc-50 bg-blue-900 hover:bg-blue-900/90',
         size ? buttonSize[size] : buttonSize.md,
@@ -50,7 +52,7 @@ export function Button({
       )}
     >
       {!isLoading && title}
-      {isLoading && <Spinner className={cn(size === 'md' && 'w-6 h-6')} />}
+      {isLoading && <Spinner className={cn(size !== 'lg' && 'w-6 h-6')} />}
     </button>
   );
 }
