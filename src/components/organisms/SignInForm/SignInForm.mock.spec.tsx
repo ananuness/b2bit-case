@@ -1,13 +1,22 @@
 import { vi, Mock } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SignInForm } from '.';
+import { useLocation } from 'react-router-dom';
 import { useSignInForm } from '@/hooks/useSignInForm';
+import { SignInForm } from '.';
 
-vi.mock('@/hooks/useSignInForm', async () => ({
-  useSignInForm: vi.fn(),
-}));
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
 
+  return {
+    ...actual,
+    useLocation: vi.fn(() => ({ state: null })),
+  };
+});
+
+vi.mock('@/hooks/useSignInForm');
+
+const useLocationMock = useLocation as Mock;
 const useSignInFormMock = useSignInForm as Mock;
 
 describe('SignInForm with mocks', () => {
@@ -45,7 +54,7 @@ describe('SignInForm with mocks', () => {
     );
   });
 
-  it('should show a server error message when it occurs', async () => {
+  it('should show a server error message when it occurs from server', async () => {
     const serverError = 'Internal Server error';
 
     useSignInFormMock.mockReturnValue({ serverError });
@@ -56,5 +65,19 @@ describe('SignInForm with mocks', () => {
 
     expect(useSignInForm).toHaveBeenCalledTimes(1);
     expect(errorMessage).toHaveTextContent(serverError);
+  });
+
+  it('should show a server error message when it occurs from route state', async () => {
+    const state = 'Session expired';
+
+    useLocationMock.mockReturnValue({ state });
+    useSignInFormMock.mockReturnValue({ serverError: null });
+
+    render(<SignInForm />);
+
+    const errorMessage = screen.getByRole('alert');
+
+    expect(useSignInForm).toHaveBeenCalledTimes(1);
+    expect(errorMessage).toHaveTextContent(state);
   });
 });

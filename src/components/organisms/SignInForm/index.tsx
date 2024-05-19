@@ -4,8 +4,10 @@ import { Input } from '@/components/atoms/Input';
 import { Label } from '@/components/atoms/Label';
 import { Button } from '@/components/atoms/Button';
 import { ErrorMessage } from '@/components/atoms/ErrorMessage';
+import { useLocation } from 'react-router-dom';
 
 export function SignInForm() {
+  const { state } = useLocation();
   const { signInSchema, serverError, handleSubmit } = useSignInForm();
 
   return (
@@ -18,9 +20,9 @@ export function SignInForm() {
     >
       {({ isSubmitting }) => (
         <Form aria-label="form" className="w-full max-w-96">
-          {serverError && (
+          {(serverError || state) && (
             <ErrorMessage
-              message={serverError}
+              message={serverError ?? state}
               className="block text-base text-center mb-2 text-red-700"
             />
           )}

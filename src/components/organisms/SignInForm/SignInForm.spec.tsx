@@ -1,10 +1,17 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SignInForm } from '.';
+import { BrowserRouter } from 'react-router-dom';
+
+const SignInFormWithRouter = () => (
+  <BrowserRouter>
+    <SignInForm />
+  </BrowserRouter>
+);
 
 describe('SignInForm', () => {
   it('should render the form properly', () => {
-    render(<SignInForm />);
+    render(<SignInFormWithRouter />);
 
     const form = screen.getByRole('form');
 
@@ -12,7 +19,7 @@ describe('SignInForm', () => {
   });
 
   it('should display error messages when user type something wrong', async () => {
-    render(<SignInForm />);
+    render(<SignInFormWithRouter />);
 
     const user = userEvent.setup();
 
