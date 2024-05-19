@@ -5,9 +5,9 @@ interface UserCardProps {
   lastName?: string;
   email: string;
   avatar?: {
-    image_low_url: string;
-    image_medium_url: string;
-    image_high_url: string;
+    image_low_url?: string;
+    image_medium_url?: string;
+    image_high_url?: string;
   };
 }
 
@@ -20,10 +20,12 @@ export function UserCard({ name, lastName, email, avatar }: UserCardProps) {
         <source
           srcSet={avatar?.image_low_url ?? avatarDefault}
           media="(max-width: 768px)"
+          data-testid="source-low"
         />
         <source
           srcSet={avatar?.image_medium_url ?? avatarDefault}
           media="(max-width: 1280px)"
+          data-testid="source-medium"
         />
         <img
           src={avatar?.image_high_url ?? avatarDefault}
