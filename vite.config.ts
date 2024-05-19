@@ -10,9 +10,11 @@ export default defineConfig({
     open: true,
   },
   test: {
-    environment: 'jsdom',
-    globals: true,
     bail: 1,
+    globals: true,
+    css: true,
+    environment: 'jsdom',
+    setupFiles: ['./setupTests.js'],
     coverage: {
       include: ['src/**/*'],
       enabled: true,
