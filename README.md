@@ -83,7 +83,7 @@ npm run dev
 <hr>
 
 <p align="center">
-  Made with 💛 by
+  Feito com 💛 por
   <a href="https://www.linkedin.com/in/ana-beatriz-nunes/">
     Ana Beatriz Nunes
   </a>
