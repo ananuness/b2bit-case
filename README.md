@@ -79,3 +79,12 @@ npm run dev
 - [x] JWT token para autenticação
 - [x] Tela de Perfil do usuário
 - [x] Logout do usuário
+
+<hr>
+
+<p align="center">
+  Made with 💛 by
+  <a href="https://www.linkedin.com/in/ana-beatriz-nunes/">
+    Ana Beatriz Nunes
+  </a>
+</p>
